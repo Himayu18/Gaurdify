@@ -6,7 +6,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from FileGuard_Service import detect_file
-import ai_model 
+from MailGuard_Service import ai_model
        
 class emails:
     def __init__(self,mail):
@@ -53,7 +53,7 @@ class emails:
             if part.get_content_disposition() == "attachment":
 
                 filename = part.get_filename() or "attachment.bin"
-                filename = os.path.basename(filename)  # prevents path injection
+                filename = os.path.basename(filename) 
 
                 file_data = part.get_payload(decode=True)
                 if file_data is None:
@@ -71,11 +71,21 @@ class emails:
    
    
     def check_email_files(self):
-        if  self.mail is None:
+        if self.mail is None:
             return None
-        
+
         files = self.extract_attached_file()
-        return detect_file.detect_files(files[0])
+        if not files:
+            return None
+
+        try:
+            result = detect_file.detect_files(files[0])
+            return result
+        
+        finally:
+            for f in files:
+                if os.path.exists(f):
+                    os.remove(f)
 
     def check_email_content(self):
             content = self.extract_content()
@@ -90,8 +100,12 @@ class emails:
             return result.get("label")
 
     def detect_email(self):
-        
-        if self.check_email_content() == "not_spam" and self.check_email_files():
+        file_result = self.check_email_files()      
+        content_label = self.check_email_content()  
+
+        if file_result is None:
+            return content_label
+
+        if content_label == "not_spam" and file_result:
             return "not_spam"
-        else:
-            return "spam"
+        return "spam"
