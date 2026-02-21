@@ -27,6 +27,17 @@ def is_pdf_malformed(path):
 
     except Exception:
         return True
+    
+
+def validate_pdf(filename):
+    sign = file_signeture(filename)
+    malformed = is_pdf_malformed(filename)
+    if sign is None:
+        return False
+
+    if malformed:
+        return False
+    return True
          
 
 
