@@ -8,7 +8,7 @@ def detect_files(filename):
     df = pd.DataFrame([data])
 
     import joblib
-    model = joblib.load("FileGuard_Service\models\pdf_model.pkl")
+    model = joblib.load("FileGuard_Service/models/pdf_model.pkl")
     prediction = model.predict(df)
 
 

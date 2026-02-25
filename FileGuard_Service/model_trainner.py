@@ -12,7 +12,7 @@ pd.set_option("display.max_colwidth", None)
 pd.set_option("display.width", None)
 
 import pyarrow.parquet as pq
-data_set = pq.read_table("FileGuard_Service\datasets\PDFMalware2022.parquet")
+data_set = pq.read_table("FileGuard_Service/datasets/PDFMalware2022.parquet")
 df = data_set.to_pandas(types_mapper=None)
 
 df = df.drop(columns=["Header","FileName","Text","Endobj","Endstream","Xref","StartXref","PageNo","Encrypt","EmbeddedFile","Colors","XFA","JS","Acroform","ObjStm"])
