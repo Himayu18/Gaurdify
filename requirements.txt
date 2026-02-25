@@ -1,5 +1,4 @@
 fastapi==0.133.0
-fitz==0.0.1.dev2
 joblib==1.5.3
 pandas==3.0.1
 pyarrow==23.0.1
