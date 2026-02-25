@@ -2,9 +2,12 @@ from pathlib import Path
 import fitz 
 
 class pdf:
-    def __init__(self,file):
+    def __init__(self, file):
         self.file = file
-        self.doc = fitz.open(self.file)
+        try:
+            self.doc = fitz.open(self.file)
+        except Exception as e:
+            raise Exception(f"Cannot open PDF: {str(e)}")
 
     def pdf_size(self) -> float:
         file = Path(self.file)
