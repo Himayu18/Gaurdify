@@ -8,3 +8,4 @@ python-dotenv==1.2.1
 python_magic==0.4.27
 Requests==2.32.5
 scikit_learn==1.8.0
+uvicorn
