@@ -16,9 +16,20 @@ class pdf:
         return round(pdfsize,1)
     
     def metadata_size(self) -> float:
-        xref = self.doc.xref_get_key(self.doc.pdf_catalog(), "Metadata")
-        MetadataSize = float(len(self.doc.xref_stream(int(xref[1].split()[0]))) if xref else 0)
-        return MetadataSize
+        try:
+            xref = self.doc.xref_get_key(self.doc.pdf_catalog(), "Metadata")
+            if not xref or not xref[1] or "null" in xref[1]:
+                return 0.0
+
+            ref_number = xref[1].split()[0]
+            if not ref_number.isdigit():
+                return 0.0
+
+            stream_data = self.doc.xref_stream(int(ref_number))
+            return float(len(stream_data)) if stream_data else 0.0
+
+        except Exception:
+            return 0.0
 
     def count_pages(self) -> float:
         pages = float(self.doc.page_count)
