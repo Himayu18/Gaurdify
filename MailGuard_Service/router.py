@@ -14,7 +14,7 @@ def scan_email(raw_email: str = Body(..., media_type="text/plain")):
     if not raw_email or not raw_email.strip():
         raise HTTPException(status_code=400, detail="Empty email content.")
 
-    # Save temporarily (your existing class expects a file path)
+
     base_dir = os.path.dirname(__file__)
     upload_dir = os.path.join(base_dir, "emails")
 
@@ -37,7 +37,6 @@ def scan_email(raw_email: str = Body(..., media_type="text/plain")):
             detail=f"Failed to write email content: {str(e)}"
         )
 
-    # Validate MIME structure
     try:
         with open(email_path, "rb") as f:
             msg = BytesParser(policy=policy.default).parse(f)
